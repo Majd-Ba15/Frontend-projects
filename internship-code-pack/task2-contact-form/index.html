@@ -1,0 +1,41 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task 2 — Contact Form</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <main class="container">
+    <header class="lead">
+      <h1>Contact Us</h1>
+      <p>We’ll get back to you within 1–2 business days.</p>
+    </header>
+    <form id="contactForm" novalidate>
+      <div class="field">
+        <label for="fullName">Full Name</label>
+        <input id="fullName" name="fullName" type="text" required aria-describedby="fullNameHelp"/>
+        <small id="fullNameHelp" class="muted">Your first and last name.</small>
+      </div>
+      <div class="field">
+        <label for="email">Email Address</label>
+        <input id="email" name="email" type="email" required/>
+      </div>
+      <div class="field">
+        <label for="subject">Subject</label>
+        <input id="subject" name="subject" type="text" required/>
+      </div>
+      <div class="field">
+        <label for="message">Message</label>
+        <textarea id="message" name="message" rows="5" minlength="10" required></textarea>
+      </div>
+      <div class="actions">
+        <button class="btn" type="submit">Send Message</button>
+        <p id="formStatus" role="status" aria-live="polite"></p>
+      </div>
+    </form>
+  </main>
+  <script src="app.js"></script>
+</body>
+</html>
