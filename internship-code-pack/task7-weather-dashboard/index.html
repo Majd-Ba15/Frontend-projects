@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>WeatherNow — Dashboard</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <main class="container">
+    <header class="topbar">
+      <h1>WeatherNow</h1>
+      <div class="actions">
+        <form id="searchForm" class="search" role="search">
+          <input id="query" name="q" aria-label="City name" placeholder="Search city... (e.g., Beirut)" required/>
+          <button class="btn" type="submit">Search</button>
+        </form>
+        <button id="geoBtn" class="btn subtle">Use my location</button>
+      </div>
+    </header>
+
+    <section id="status" class="status" aria-live="polite"></section>
+
+    <section id="current" class="current card" hidden>
+      <div class="current-main">
+        <div>
+          <h2 id="cityName"></h2>
+          <div id="currentTemp" class="temp"></div>
+          <div id="currentDesc" class="muted"></div>
+        </div>
+        <img id="currentIcon" alt="" />
+      </div>
+      <div class="meta">
+        <div><span>Humidity</span><strong id="humidity"></strong></div>
+        <div><span>Wind</span><strong id="wind"></strong></div>
+      </div>
+    </section>
+
+    <section id="forecast" class="forecast grid" hidden></section>
+  </main>
+
+  <footer class="footer">
+    <small>Powered by OpenWeatherMap — set your API key in <code>app.js</code>.</small>
+  </footer>
+
+  <script src="app.js"></script>
+</body>
+</html>
