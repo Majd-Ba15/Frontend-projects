@@ -1,0 +1,63 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+  <title>Task 1 — Collapsible Sidebar</title>
+  <link rel="stylesheet" href="styles.css"/>
+</head>
+<body>
+  <header class="app-header">
+    <button class="icon-btn" id="sidebarToggle" aria-expanded="false" aria-controls="sidebar">
+      <!-- Hamburger icon -->
+      <svg xmlns="http://www.w3.org/2000/svg" width="24" height="24" viewBox="0 0 24 24" aria-hidden="true">
+        <path d="M3 6h18M3 12h18M3 18h18" stroke="currentColor" stroke-width="2" stroke-linecap="round"/>
+      </svg>
+      <span class="sr-only">Toggle Sidebar</span>
+    </button>
+    <h1 class="brand">Acme<span>UI</span></h1>
+  </header>
+
+  <aside id="sidebar" class="sidebar" aria-label="Primary">
+    <div class="logo">
+      <div class="logo-mark">🚀</div>
+      <div class="logo-text">Your Logo</div>
+    </div>
+
+    <nav class="nav">
+      <a class="nav-link active" href="#dash">
+        <span class="nav-icon">🏠</span><span>Dashboard</span>
+      </a>
+      <a class="nav-link" href="#projects">
+        <span class="nav-icon">📁</span><span>Projects</span>
+      </a>
+      <a class="nav-link" href="#messages">
+        <span class="nav-icon">✉️</span><span>Messages</span>
+      </a>
+      <a class="nav-link" href="#settings">
+        <span class="nav-icon">⚙️</span><span>Settings</span>
+      </a>
+      <a class="nav-link" href="#help">
+        <span class="nav-icon">❓</span><span>Help</span>
+      </a>
+    </nav>
+  </aside>
+
+  <main class="content" id="content" tabindex="-1">
+    <section class="hero">
+      <h2>Collapsible Sidebar</h2>
+      <p>Click the top-left button to open/close the sidebar. Resize to test the mobile overlay. Smooth, accessible, and responsive.</p>
+      <button class="primary-btn">Primary Action</button>
+    </section>
+    <section class="grid">
+      <article class="card"><h3>Card One</h3><p>Reusable card components with clean spacing.</p></article>
+      <article class="card"><h3>Card Two</h3><p>Keyboard-friendly toggle and focus management.</p></article>
+      <article class="card"><h3>Card Three</h3><p>Fluid layout with CSS variables and light shadows.</p></article>
+    </section>
+  </main>
+
+  <div class="backdrop" id="backdrop" hidden></div>
+
+  <script src="app.js"></script>
+</body>
+</html>
