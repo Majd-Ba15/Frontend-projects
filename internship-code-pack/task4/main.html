@@ -1,0 +1,435 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>My Personal Blog</title>
+    <style>
+        /* Reset and Base Styles */
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        }
+        
+        body {
+            background-color: #f8f9fa;
+            color: #333;
+            line-height: 1.6;
+        }
+        
+        /* Header Styles */
+        header {
+            background-color: #fff;
+            box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+            padding: 1.5rem 2rem;
+            position: sticky;
+            top: 0;
+            z-index: 100;
+        }
+        
+        .blog-title {
+            font-size: 2.2rem;
+            font-weight: 700;
+            color: #2c3e50;
+        }
+        
+        /* Main Content Styles */
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            padding: 2rem;
+        }
+        
+        /* Filter Section */
+        .filters {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 2rem;
+            flex-wrap: wrap;
+            gap: 1rem;
+        }
+        
+        .category-filter {
+            display: flex;
+            gap: 0.5rem;
+            flex-wrap: wrap;
+        }
+        
+        .category-btn {
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+            transition: all 0.3s ease;
+        }
+        
+        .category-btn:hover {
+            background-color: #f1f1f1;
+        }
+        
+        .category-btn.active {
+            background-color: #2c3e50;
+            color: white;
+            border-color: #2c3e50;
+        }
+        
+        .search-box {
+            padding: 0.5rem 1rem;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            width: 250px;
+        }
+        
+        /* Blog Posts Grid */
+        .blog-posts {
+            display: grid;
+            grid-template-columns: repeat(auto-fill, minmax(300px, 1fr));
+            gap: 2rem;
+            margin-bottom: 2rem;
+        }
+        
+        .post-card {
+            background-color: #fff;
+            border-radius: 8px;
+            overflow: hidden;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            transition: transform 0.3s ease;
+        }
+        
+        .post-card:hover {
+            transform: translateY(-5px);
+        }
+        
+        .post-image {
+            width: 100%;
+            height: 200px;
+            object-fit: cover;
+        }
+        
+        .post-content {
+            padding: 1.5rem;
+        }
+        
+        .post-title {
+            font-size: 1.4rem;
+            margin-bottom: 0.5rem;
+            color: #2c3e50;
+        }
+        
+        .post-date {
+            color: #7f8c8d;
+            font-size: 0.9rem;
+            margin-bottom: 1rem;
+        }
+        
+        .post-description {
+            margin-bottom: 1.5rem;
+            color: #34495e;
+        }
+        
+        /* Pagination */
+        .pagination {
+            display: flex;
+            justify-content: center;
+            gap: 0.5rem;
+            margin-top: 2rem;
+        }
+        
+        .page-btn {
+            padding: 0.5rem 1rem;
+            background-color: #fff;
+            border: 1px solid #ddd;
+            border-radius: 4px;
+            cursor: pointer;
+        }
+        
+        .page-btn.active {
+            background-color: #2c3e50;
+            color: white;
+            border-color: #2c3e50;
+        }
+        
+        /* No results message */
+        .no-results {
+            text-align: center;
+            grid-column: 1 / -1;
+            padding: 2rem;
+            background-color: #fff;
+            border-radius: 8px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+        }
+        
+        /* Responsive Design */
+        @media (max-width: 768px) {
+            .filters {
+                flex-direction: column;
+                align-items: flex-start;
+            }
+            
+            .search-box {
+                width: 100%;
+            }
+            
+            .blog-posts {
+                grid-template-columns: 1fr;
+            }
+        }
+    </style>
+</head>
+<body>
+    <header>
+        <h1 class="blog-title">My Personal Blog</h1>
+    </header>
+    
+    <div class="container">
+        <div class="filters">
+            <div class="category-filter">
+                <button class="category-btn active" data-category="all">All</button>
+                <button class="category-btn" data-category="tech">Tech</button>
+                <button class="category-btn" data-category="travel">Travel</button>
+                <button class="category-btn" data-category="food">Food</button>
+                <button class="category-btn" data-category="lifestyle">Lifestyle</button>
+            </div>
+            <input type="text" class="search-box" placeholder="Search posts..." id="search-input">
+        </div>
+        
+        <div class="blog-posts" id="blog-posts-container">
+            <!-- Blog posts will be dynamically inserted here -->
+        </div>
+        
+        <div class="pagination" id="pagination">
+            <!-- Pagination buttons will be dynamically inserted here -->
+        </div>
+    </div>
+
+    <script>
+        // Sample blog post data
+        const blogPosts = [
+            {
+                id: 1,
+                title: "Getting Started with React",
+                image: "https://images.unsplash.com/photo-1633356122544-f134324a6cee?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                description: "Learn the basics of React and how to create your first component in this comprehensive guide for beginners.",
+                date: "May 15, 2023",
+                category: "tech"
+            },
+            {
+                id: 2,
+                title: "Exploring the Italian Countryside",
+                image: "https://images.unsplash.com/photo-1506905925346-21bda4d32df4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                description: "Join me on a journey through Tuscany's beautiful landscapes, charming villages, and delicious cuisine.",
+                date: "April 22, 2023",
+                category: "travel"
+            },
+            {
+                id: 3,
+                title: "The Art of Sourdough Baking",
+                image: "https://images.unsplash.com/photo-1546549032-9571cd6b27df?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
+                description: "Discover the secrets to creating the perfect sourdough bread with this step-by-step guide.",
+                date: "March 30, 2023",
+                category: "food"
+            },
+            {
+                id: 4,
+                title: "Minimalism: Living with Less",
+                image: "https://images.unsplash.com/photo-1505873242700-f289a29e1e0f?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1176&q=80",
+                description: "How adopting a minimalist lifestyle can bring more joy and purpose to your everyday life.",
+                date: "March 12, 2023",
+                category: "lifestyle"
+            },
+            {
+                id: 5,
+                title: "JavaScript ES6 Features You Should Know",
+                image: "https://images.unsplash.com/photo-1627398242454-45a1465c2479?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+                description: "Explore the most useful ES6 features that will make your JavaScript code more modern and efficient.",
+                date: "February 28, 2023",
+                category: "tech"
+            },
+            {
+                id: 6,
+                title: "Hiking the Swiss Alps",
+                image: "https://images.unsplash.com/photo-1464822759023-fed622ff2c3b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                description: "My incredible journey through the breathtaking landscapes of the Swiss Alps and what I learned along the way.",
+                date: "February 15, 2023",
+                category: "travel"
+            },
+            {
+                id: 7,
+                title: "Vegan Cooking for Beginners",
+                image: "https://images.unsplash.com/photo-1512621776951-a57141f2eefd?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                description: "Easy and delicious vegan recipes that even meat-lovers will enjoy. Perfect for those starting their plant-based journey.",
+                date: "January 22, 2023",
+                category: "food"
+            },
+            {
+                id: 8,
+                title: "Morning Routines of Successful People",
+                image: "https://images.unsplash.com/photo-1499750310107-5fef28a66643?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                description: "Discover the morning habits that set up highly successful people for productive days and long-term achievement.",
+                date: "January 8, 2023",
+                category: "lifestyle"
+            },
+            {
+                id: 9,
+                title: "Introduction to Python Programming",
+                image: "https://images.unsplash.com/photo-1526318472351-c75fcf070305?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1633&q=80",
+                description: "A beginner's guide to Python programming language, covering basic syntax and concepts to get you started.",
+                date: "December 15, 2022",
+                category: "tech"
+            },
+            {
+                id: 10,
+                title: "Hidden Gems of Southeast Asia",
+                image: "https://images.unsplash.com/photo-1539650116574-75c0c6d73f6e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1074&q=80",
+                description: "Exploring the less-traveled paths and discovering the true beauty of Southeast Asia beyond the tourist hotspots.",
+                date: "December 3, 2022",
+                category: "travel"
+            },
+            {
+                id: 11,
+                title: "The Science of Perfect Coffee",
+                image: "https://images.unsplash.com/photo-1459755486867-b55449bb39ff?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1169&q=80",
+                description: "Understanding the chemistry behind brewing the perfect cup of coffee and how to apply it at home.",
+                date: "November 18, 2022",
+                category: "food"
+            },
+            {
+                id: 12,
+                title: "Digital Detox: Why and How",
+                image: "https://images.unsplash.com/photo-1512941937669-90a1b58e7e9c?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80",
+                description: "The importance of disconnecting from technology regularly and practical tips for a successful digital detox.",
+                date: "November 5, 2022",
+                category: "lifestyle"
+            }
+        ];
+
+        // Constants
+        const POSTS_PER_PAGE = 6;
+        let currentPage = 1;
+        let currentCategory = 'all';
+        let currentSearchTerm = '';
+
+        // DOM Elements
+        const blogPostsContainer = document.getElementById('blog-posts-container');
+        const paginationElement = document.getElementById('pagination');
+        const searchInput = document.getElementById('search-input');
+        const categoryButtons = document.querySelectorAll('.category-btn');
+
+        // Initialize the blog
+        function initBlog() {
+            renderBlogPosts();
+            setupEventListeners();
+        }
+
+        // Filter posts based on category and search term
+        function filterPosts() {
+            return blogPosts.filter(post => {
+                const matchesCategory = currentCategory === 'all' || post.category === currentCategory;
+                const matchesSearch = post.title.toLowerCase().includes(currentSearchTerm.toLowerCase()) || 
+                                     post.description.toLowerCase().includes(currentSearchTerm.toLowerCase());
+                return matchesCategory && matchesSearch;
+            });
+        }
+
+        // Render blog posts based on current filters and page
+        function renderBlogPosts() {
+            const filteredPosts = filterPosts();
+            const totalPages = Math.ceil(filteredPosts.length / POSTS_PER_PAGE);
+            
+            // Adjust current page if it's beyond the total pages after filtering
+            if (currentPage > totalPages && totalPages > 0) {
+                currentPage = totalPages;
+            } else if (totalPages === 0) {
+                currentPage = 1;
+            }
+            
+            // Calculate posts to show for current page
+            const startIndex = (currentPage - 1) * POSTS_PER_PAGE;
+            const endIndex = startIndex + POSTS_PER_PAGE;
+            const postsToShow = filteredPosts.slice(startIndex, endIndex);
+            
+            // Clear the container
+            blogPostsContainer.innerHTML = '';
+            
+            // Display message if no posts found
+            if (postsToShow.length === 0) {
+                blogPostsContainer.innerHTML = `
+                    <div class="no-results">
+                        <h2>No posts found</h2>
+                        <p>Try adjusting your search or filter criteria.</p>
+                    </div>
+                `;
+                paginationElement.innerHTML = '';
+                return;
+            }
+            
+            // Render posts
+            postsToShow.forEach(post => {
+                const postElement = document.createElement('div');
+                postElement.classList.add('post-card');
+                postElement.innerHTML = `
+                    <img src="${post.image}" alt="${post.title}" class="post-image">
+                    <div class="post-content">
+                        <h2 class="post-title">${post.title}</h2>
+                        <p class="post-date">${post.date}</p>
+                        <p class="post-description">${post.description}</p>
+                    </div>
+                `;
+                blogPostsContainer.appendChild(postElement);
+            });
+            
+            // Render pagination
+            renderPagination(totalPages);
+        }
+
+        // Render pagination buttons
+        function renderPagination(totalPages) {
+            paginationElement.innerHTML = '';
+            
+            if (totalPages <= 1) return;
+            
+            for (let i = 1; i <= totalPages; i++) {
+                const button = document.createElement('button');
+                button.classList.add('page-btn');
+                if (i === currentPage) {
+                    button.classList.add('active');
+                }
+                button.textContent = i;
+                button.addEventListener('click', () => {
+                    currentPage = i;
+                    renderBlogPosts();
+                });
+                paginationElement.appendChild(button);
+            }
+        }
+
+        // Set up event listeners
+        function setupEventListeners() {
+            // Category filter buttons
+            categoryButtons.forEach(button => {
+                button.addEventListener('click', () => {
+                    categoryButtons.forEach(btn => btn.classList.remove('active'));
+                    button.classList.add('active');
+                    currentCategory = button.getAttribute('data-category');
+                    currentPage = 1;
+                    renderBlogPosts();
+                });
+            });
+            
+            // Search input
+            searchInput.addEventListener('input', () => {
+                currentSearchTerm = searchInput.value;
+                currentPage = 1;
+                renderBlogPosts();
+            });
+        }
+
+        // Initialize the blog when the page loads
+        document.addEventListener('DOMContentLoaded', initBlog);
+    </script>
+</body>
+</html>
